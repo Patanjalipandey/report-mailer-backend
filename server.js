@@ -76,7 +76,7 @@ app.post("/send-report", async (req, res) => {
 
     // Email options
     const mailOptions = {
-      from: onboarding@resend.dev,
+      from: "onboarding@resend.dev",
       to: sendToList, // send to yourself for testing
       subject: "Weekly Watchlist Report",
       html: htmlContent,
@@ -115,5 +115,6 @@ app.get("/", (req, res) => {
 
 // Start server
 app.listen(5001, () => console.log("Mailer running on port 5001"));
+
 
 
