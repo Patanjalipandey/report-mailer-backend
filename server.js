@@ -13,13 +13,9 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
+app.use(cors({
+    origin: "*"
+}));
 
 app.use(express.json());
 
@@ -118,3 +114,4 @@ app.get("/", (req, res) => {
 
 // Start server
 app.listen(5001, () => console.log("Mailer running on port 5001"));
+
