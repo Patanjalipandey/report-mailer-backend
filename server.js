@@ -64,14 +64,15 @@ app.post("/send-report", async (req, res) => {
     // ========================================
     console.log("📄 Launching Chromium...");
 
-    const executablePath = await chromium.executablePath;
+const executablePath = await chromium.executablePath();
 
-    const browser = await puppeteer.launch({
-      executablePath,
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      headless: chromium.headless,
-    });
+const browser = await puppeteer.launch({
+  executablePath,
+  args: chromium.args,
+  headless: chromium.headless,
+  defaultViewport: chromium.defaultViewport
+});
+
 
     const page = await browser.newPage();
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
@@ -131,3 +132,4 @@ app.get("/", (req, res) => {
 // ========================================
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Mailer running on port ${PORT}`));
+
