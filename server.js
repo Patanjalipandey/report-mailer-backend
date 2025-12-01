@@ -3,7 +3,10 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import * as reportTemplateModule from "./reportTemplate.js";
 import cors from "cors";
-import puppeteer from "puppeteer";
+
+// PDF generator
+import chromium from "chrome-aws-lambda";
+import puppeteer from "puppeteer-core";
 
 dotenv.config();
 const app = express();
@@ -29,7 +32,7 @@ if (!reportTemplate) {
 }
 
 // =========================
-// EMAIL CONFIG (RESEND SMTP)
+//  RESEND SMTP CONFIG
 // =========================
 const transporter = nodemailer.createTransport({
   host: "smtp.resend.com",
@@ -42,36 +45,45 @@ const transporter = nodemailer.createTransport({
 });
 
 // =========================
-// SEND EMAIL + PDF
+//  SEND REPORT EMAIL
 // =========================
 app.post("/send-report", async (req, res) => {
   try {
     const { title, period, compiled, rows, sendTo } = req.body;
-
+    
     const htmlContent = reportTemplate({ title, period, compiled, rows });
 
-    // MULTIPLE EMAILS SUPPORT
+    // MULTIPLE EMAIL SUPPORT
     const sendToList = sendTo.split(",").map(e => e.trim());
 
     // =========================
-    // GENERATE PDF USING PUPPETEER
+    // PDF GENERATION (Render compatible)
     // =========================
-    console.log("Generating PDF...");
+    console.log("📄 Launching Chromium...");
+
+    const executablePath = await chromium.executablePath;
 
     const browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      headless: true
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: chromium.headless
     });
 
     const page = await browser.newPage();
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
-    const pdfBuffer = await page.pdf({ format: "A4" });
+
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true
+    });
+
     await browser.close();
 
-    console.log("PDF generated!");
+    console.log("✅ PDF Generated!");
 
     // =========================
-    // SEND EMAIL
+    // EMAIL OPTIONS
     // =========================
     const mailOptions = {
       from: "onboarding@resend.dev",
@@ -91,25 +103,30 @@ app.post("/send-report", async (req, res) => {
       ]
     };
 
+    // SEND EMAIL
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error("Email Error:", error);
-        return res.status(500).json({ error: "Failed to send email" });
+        return res.status(500).json({ error: "Failed to send email", details: error });
       }
       return res.json({ message: "Email sent successfully!", info });
     });
 
   } catch (error) {
     console.error("Server Error:", error);
-    res.status(500).json({ error: "Something went wrong" });
+    res.status(500).json({ error: "Something went wrong", details: error });
   }
 });
 
-// TEST ROUTE
+// =========================
+//  TEST ROUTE
+// =========================
 app.get("/", (req, res) => {
   res.send("Mailer is running...");
 });
 
-// START SERVER
+// =========================
+//  START SERVER
+// =========================
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Mailer running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Mailer running on port ${PORT}`));
