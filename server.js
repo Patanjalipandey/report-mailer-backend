@@ -42,14 +42,15 @@ if (!reportTemplate) {
 //  EMAIL + PDF CONFIG
 // =========================
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: true, // SSL for Gmail port 465
+  host: "smtp.resend.com",
+  port: 587,
+  secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
+    user: "resend",
+    pass: process.env.RESEND_API_KEY
+  }
 });
+
 
 
 // =========================
@@ -75,7 +76,7 @@ app.post("/send-report", async (req, res) => {
 
     // Email options
     const mailOptions = {
-      from: process.env.EMAIL_FROM,
+      from: onboarding@resend.dev,
       to: sendToList, // send to yourself for testing
       subject: "Weekly Watchlist Report",
       html: htmlContent,
@@ -114,4 +115,5 @@ app.get("/", (req, res) => {
 
 // Start server
 app.listen(5001, () => console.log("Mailer running on port 5001"));
+
 
