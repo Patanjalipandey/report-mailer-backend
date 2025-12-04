@@ -5,15 +5,16 @@ import * as reportTemplateModule from "./reportTemplate.js";
 import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
 import { Resend } from "resend";
-import fs from "fs"; 
+import fs from "fs";
 
 dotenv.config();
+
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
 // ===============================
-// IMPORT REPORT TEMPLATE
+// IMPORT TEMPLATE
 // ===============================
 const reportTemplate =
   typeof reportTemplateModule === "function"
@@ -26,7 +27,7 @@ if (!reportTemplate) {
 }
 
 // ===============================
-// INIT RESEND API
+// RESEND INIT
 // ===============================
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -40,9 +41,9 @@ app.post("/send-report", async (req, res) => {
     const recipients = sendTo.split(",").map((e) => e.trim());
     const htmlContent = reportTemplate({ title, period, compiled, rows });
 
-    // ================================
-    // GENERATE PDF (Chromium)
-    // ================================
+    // ===============================
+    // GENERATE PDF
+    // ===============================
     console.log("📄 Launching Chromium...");
     const executablePath = await chromium.executablePath();
 
@@ -50,7 +51,7 @@ app.post("/send-report", async (req, res) => {
       executablePath,
       args: chromium.args,
       headless: chromium.headless,
-      defaultViewport: chromium.defaultViewport,
+      defaultViewport: chromium.defaultViewport
     });
 
     const page = await browser.newPage();
@@ -58,35 +59,34 @@ app.post("/send-report", async (req, res) => {
 
     const pdfBuffer = await page.pdf({
       format: "A4",
-      printBackground: true,
+      printBackground: true
     });
 
     await browser.close();
     console.log("✅ PDF generated!");
 
-    // ================================
-    // SEND EMAIL USING RESEND API
-    // ================================
-    const { data, error } = await resend.emails.send({
-      from: "reports@tbcpl.co.in",
+    // ===============================
+    // SEND EMAIL THROUGH RESEND
+    // ===============================
+    const { error, data } = await resend.emails.send({
+      from: "TBCPL Reports <reports@tbcpl.co.in>",
       to: recipients,
       subject: "Weekly Watchlist Report",
       html: htmlContent,
 
       attachments: [
         {
-          fileName: "fraud-report.pdf",
+          filename: "fraud-report.pdf",
           content: pdfBuffer.toString("base64"),
-          type: "application/pdf",
+          type: "application/pdf"
         },
         {
-  fileName: "logo.png",
-  content: fs.readFileSync("./logo.png").toString("base64"),
-  type: "image/png",
-  content_id: "truebuddylogo"
-},
-
-      ],
+          filename: "logo.png",
+          content: fs.readFileSync("./logo.png").toString("base64"),
+          type: "image/png",
+          cid: "truebuddylogo" // FIXED!!
+        }
+      ]
     });
 
     if (error) {
@@ -96,9 +96,9 @@ app.post("/send-report", async (req, res) => {
 
     return res.json({ message: "Email sent successfully!", data });
 
-  } catch (error) {
-    console.error("❌ Server Error:", error);
-    return res.status(500).json({ error });
+  } catch (err) {
+    console.error("❌ Server Error:", err);
+    res.status(500).json({ error: err.toString() });
   }
 });
 
@@ -114,4 +114,3 @@ app.get("/", (req, res) => {
 // ===============================
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Server live on port ${PORT}`));
-
