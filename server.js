@@ -1,78 +1,56 @@
 import express from "express";
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import * as reportTemplateModule from "./reportTemplate.js";
 import cors from "cors";
-
-// PDF dependencies
+import * as reportTemplateModule from "./reportTemplate.js";
 import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
+import { Resend } from "resend";
 
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: "*" }));
 
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-
-// ========================================
-// FIX IMPORT FOR TEMPLATE
-// ========================================
+// ===============================
+// IMPORT REPORT TEMPLATE
+// ===============================
 const reportTemplate =
   typeof reportTemplateModule === "function"
     ? reportTemplateModule
-    : typeof reportTemplateModule.default === "function"
-      ? reportTemplateModule.default
-      : null;
+    : reportTemplateModule.default;
 
 if (!reportTemplate) {
-  console.error("❌ reportTemplate is not a function!");
+  console.error("❌ reportTemplate not found!");
   process.exit(1);
 }
 
-// ========================================
-// RESEND SMTP CONFIG
-// ========================================
-const transporter = nodemailer.createTransport({
-  host: "smtp.resend.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: "resend",
-    pass: process.env.RESEND_API_KEY,
-  },
-});
+// ===============================
+// INIT RESEND API
+// ===============================
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-// ========================================
-// SEND REPORT EMAIL
-// ========================================
+// ===============================
+// SEND REPORT
+// ===============================
 app.post("/send-report", async (req, res) => {
   try {
     const { title, period, compiled, rows, sendTo } = req.body;
 
-    // Generate HTML template
+    const recipients = sendTo.split(",").map((e) => e.trim());
     const htmlContent = reportTemplate({ title, period, compiled, rows });
 
-    // Handle multiple recipients
-    const sendToList = sendTo.split(",").map((email) => email.trim());
-
-    // ========================================
-    // GENERATE PDF USING SPARTICUZ CHROMIUM
-    // ========================================
+    // ================================
+    // GENERATE PDF (Chromium)
+    // ================================
     console.log("📄 Launching Chromium...");
+    const executablePath = await chromium.executablePath();
 
-const executablePath = await chromium.executablePath();
-
-const browser = await puppeteer.launch({
-  executablePath,
-  args: chromium.args,
-  headless: chromium.headless,
-  defaultViewport: chromium.defaultViewport
-});
-
+    const browser = await puppeteer.launch({
+      executablePath,
+      args: chromium.args,
+      headless: chromium.headless,
+      defaultViewport: chromium.defaultViewport,
+    });
 
     const page = await browser.newPage();
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
@@ -83,54 +61,53 @@ const browser = await puppeteer.launch({
     });
 
     await browser.close();
-    console.log("✅ PDF generated successfully!");
+    console.log("✅ PDF generated!");
 
-    // ========================================
-    // SEND EMAIL
-    // ========================================
-    const mailOptions = {
+    // ================================
+    // SEND EMAIL USING RESEND API
+    // ================================
+    const { data, error } = await resend.emails.send({
       from: "reports@tbcpl.co.in",
-      to: sendToList,
+      to: recipients,
       subject: "Weekly Watchlist Report",
       html: htmlContent,
+
       attachments: [
         {
-          filename: "logo.png",
-          path: "./logo.png", // MUST exist in backend root
-          cid: "truebuddylogo",
+          fileName: "fraud-report.pdf",
+          content: pdfBuffer.toString("base64"),
+          type: "application/pdf",
         },
         {
-          filename: "fraud-report.pdf",
-          content: pdfBuffer,
+          fileName: "logo.png",
+          path: "./logo.png",
+          content_id: "truebuddylogo",
         },
       ],
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("❌ Email Error:", error);
-        return res.status(500).json({ error: "Failed to send email", details: error });
-      }
-
-      return res.json({ message: "Email sent successfully!", info });
     });
+
+    if (error) {
+      console.error("❌ Resend API Error:", error);
+      return res.status(500).json({ error });
+    }
+
+    return res.json({ message: "Email sent successfully!", data });
+
   } catch (error) {
     console.error("❌ Server Error:", error);
-    res.status(500).json({ error: "Something went wrong", details: error });
+    return res.status(500).json({ error });
   }
 });
 
-// ========================================
+// ===============================
 // TEST ROUTE
-// ========================================
+// ===============================
 app.get("/", (req, res) => {
-  res.send("Mailer is running...");
+  res.send("Mailer running with Resend API 🚀");
 });
 
-// ========================================
+// ===============================
 // START SERVER
-// ========================================
+// ===============================
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`🚀 Mailer running on port ${PORT}`));
-
-
+app.listen(PORT, () => console.log(`🚀 Server live on port ${PORT}`));
