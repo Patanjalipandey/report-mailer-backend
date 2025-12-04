@@ -5,6 +5,7 @@ import * as reportTemplateModule from "./reportTemplate.js";
 import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
 import { Resend } from "resend";
+import fs from "fs"; 
 
 dotenv.config();
 const app = express();
@@ -79,10 +80,12 @@ app.post("/send-report", async (req, res) => {
           type: "application/pdf",
         },
         {
-          fileName: "logo.png",
-          path: "./logo.png",
-          content_id: "truebuddylogo",
-        },
+  fileName: "logo.png",
+  content: fs.readFileSync("./logo.png").toString("base64"),
+  type: "image/png",
+  content_id: "truebuddylogo"
+},
+
       ],
     });
 
@@ -111,3 +114,4 @@ app.get("/", (req, res) => {
 // ===============================
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Server live on port ${PORT}`));
+
