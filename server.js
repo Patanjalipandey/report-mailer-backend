@@ -89,7 +89,7 @@ const browser = await puppeteer.launch({
     // SEND EMAIL
     // ========================================
     const mailOptions = {
-      from: "onboarding@resend.dev",
+      from: "reports@tbcpl.co.in",
       to: sendToList,
       subject: "Weekly Watchlist Report",
       html: htmlContent,
@@ -132,4 +132,5 @@ app.get("/", (req, res) => {
 // ========================================
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Mailer running on port ${PORT}`));
+
 
