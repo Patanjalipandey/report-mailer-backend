@@ -143,7 +143,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
       <!-- HEADER -->
       <div class="header">
         <div class="logo-box">
-          <img src="cid:truebuddylogo" 
+          <img src="data:image/png;base64,${logo}" 
      alt="True Buddy Logo" 
      style="width:100%; height:auto; display:block; margin:0 auto;" />
         </div>
@@ -200,3 +200,4 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </body>
   </html>`;
 }
+
