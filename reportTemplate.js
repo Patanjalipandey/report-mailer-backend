@@ -31,6 +31,46 @@ export default function reportTemplate({ title, period, compiled, rows }) {
         display:flex; align-items:center; justify-content:center;
       }
 
+      /* --- TRUE BUDDY LOGO CSS --- */
+.tbc-logo {
+  display: inline-block;
+  transform: scale(0.45); /* Adjust SIZE here */
+  transform-origin: left top;
+}
+
+.tbc-frame {
+  border: 6px solid #5bb8ff;
+  padding: 25px 50px 10px 50px;
+  display: inline-block;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.tbc-main {
+  font-size: 100px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.tbc-subbox {
+  background: #5bb8ff;
+  padding: 10px 40px;
+  margin: -20px auto 0 auto;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.tbc-sub {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-shadow: 0 0 4px #000;
+  font-family: Arial, sans-serif;
+}
+
       .header-title h1 { margin:0; font-size:28px; }
       .meta { font-size:14px; margin-top:5px; }
 
@@ -55,11 +95,18 @@ export default function reportTemplate({ title, period, compiled, rows }) {
     <div class="container">
 
       <div class="header">
-        <div class="logo-box">
-          <img src="${LOGO_BASE64}"
-               alt="Logo"
-               style="width:100%; height:auto; display:block;" />
-        </div>
+<div class="logo-box">
+  <div class="tbc-logo">
+    <div class="tbc-frame">
+      <span class="tbc-main">TRUE BUDDY</span>
+    </div>
+
+    <div class="tbc-subbox">
+      <span class="tbc-sub">Consulting</span>
+    </div>
+  </div>
+</div>
+
 
         <div class="header-title">
           <h1>${title}</h1>
@@ -97,3 +144,4 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
