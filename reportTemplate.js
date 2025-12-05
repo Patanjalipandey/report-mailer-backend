@@ -1,5 +1,13 @@
-const LOGO_BASE64 = `
-data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAANQCAYAAADYLRHeAAAAOXRFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyAzLjQuMyAoS2VybmVsIDI2LjI5MikgKFAvUE5HKTPoTbogAAAPWUlEQVR4nO3de5BW1b3/8d9zOy99BhYgWNEkSdpC8RAiQ2nYpQ7Tgl9tUyhDj2qV0FtqH1xq0tL0SYhTaoUpTQqQ2kgiYQSSAxGxIUBkWgJhGoYwilcGxiit1z9+zvnnjtebPWbNmXfeeW/mXuecMzPnzM0/zs6cM7Mz55znWcwDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABfB8jZZq2RF1jkqZ7D3RWe4ZrHQDsMFXq5S8fvfrOpz67fSzb5tFHnhOrvYDEAAAAAAAAAAAAAAAAAAAAAAAAAAIBVqT2p8jdJnrmOnYx9lYxnKZ7cfS9rG6/nOjT4NmJf2vpa98jz9Xhz7yNRfXYPgAAAAAAAAAAAAAAAAAAAAAAAAAAAFqQ7qci9sk5o4OSJZ6djC8orgy3lfq7n8brE+dbI+sd0rcx/7mACAAAAAAAAAAAAAAAAAAAAAAAAAAD4B2qN6o8r0rI8cfZLDolnJ1MHyitDLeW+rujxu0b57YjaJfSzxP+5QAgAAAAAAAAAAAAAAAAAAAAAAAAAAAOA1qh+p8o0y08wdjy5Kljp2MLyiuDLcV+rufi6tnnWUPkm9qH7H/sYAI...
+const LOGO_HTML = `
+<div class="tb-logo-wrapper">
+  <div class="tb-frame">
+    <span class="tb-main-text">TRUE BUDDY</span>
+  </div>
+
+  <div class="tb-subbox">
+    <span class="tb-sub-text">Consulting</span>
+  </div>
+</div>
 `;
 
 export default function reportTemplate({ title, period, compiled, rows }) {
@@ -27,67 +35,90 @@ export default function reportTemplate({ title, period, compiled, rows }) {
       }
 
       .logo-box {
-        width:110px; height:70px;
-        display:flex; align-items:center; justify-content:center;
+        width:auto;
+        height:auto;
+        display:flex;
+        align-items:center;
+        justify-content:center;
       }
 
-      /* --- TRUE BUDDY LOGO CSS --- */
-.tbc-logo {
-  display: inline-block;
-  transform: scale(0.45); /* Adjust SIZE here */
-  transform-origin: left top;
-}
+      /* ---------------------------
+         TRUE BUDDY LOGO (PURE CSS)
+      ----------------------------*/
 
-.tbc-frame {
-  border: 6px solid #5bb8ff;
-  padding: 25px 50px 10px 50px;
-  display: inline-block;
-  border-radius: 3px;
-  text-align: center;
-}
+      .tb-logo-wrapper {
+        position: relative;
+        display: inline-block;
+      }
 
-.tbc-main {
-  font-size: 100px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: #ffffff;
-  font-family: Arial, sans-serif;
-}
+      .tb-frame {
+        border: 4px solid #5bb8ff;
+        background: #0f6b86;
+        padding: 10px 20px;
+        border-radius: 4px;
+        display: inline-block;
+        text-align: center;
+      }
 
-.tbc-subbox {
-  background: #5bb8ff;
-  padding: 10px 40px;
-  margin: -20px auto 0 auto;
-  border-radius: 3px;
-  display: inline-block;
-}
+      .tb-main-text {
+        color: white;
+        font-weight: 900;
+        font-size: 17px;
+        letter-spacing: 4px;
+        display: block;
+        font-family: Arial, sans-serif;
+      }
 
-.tbc-sub {
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #ffffff;
-  text-shadow: 0 0 4px #000;
-  font-family: Arial, sans-serif;
-}
+      .tb-subbox {
+        position: absolute;
+        left: 50%;
+        bottom: -10px;
+        transform: translateX(-50%) translateY(4px);
+        background: #5bb8ff;
+        padding: 4px 16px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+      }
+
+      .tb-sub-text {
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: Arial, sans-serif;
+      }
+
+      /* -------------------------------- */
 
       .header-title h1 { margin:0; font-size:28px; }
       .meta { font-size:14px; margin-top:5px; }
 
       .content { padding:30px; }
 
-      .section-box { border:1px solid #e5e7eb; border-radius:8px; margin-bottom:25px; padding:15px; }
+      .section-box { 
+        border:1px solid #e5e7eb; 
+        border-radius:8px; 
+        margin-bottom:25px; 
+        padding:15px; 
+      }
+
       .section-heading {
         background:linear-gradient(90deg,#0e7490,#2563eb);
-        color:white; padding:6px 12px; border-radius:4px;
-        text-align:center; margin-bottom:15px;
+        color:white;
+        padding:6px 12px;
+        border-radius:4px;
+        text-align:center;
+        margin-bottom:15px;
       }
 
       .footer {
         background:linear-gradient(90deg,#0e7490,#2563eb);
-        padding:12px 18px; color:white; font-size:12px;
-        display:flex; justify-content:space-between;
+        padding:12px 18px;
+        color:white;
+        font-size:12px;
+        display:flex;
+        justify-content:space-between;
       }
+
     </style>
   </head>
 
@@ -95,18 +126,9 @@ export default function reportTemplate({ title, period, compiled, rows }) {
     <div class="container">
 
       <div class="header">
-<div class="logo-box">
-  <div class="tbc-logo">
-    <div class="tbc-frame">
-      <span class="tbc-main">TRUE BUDDY</span>
-    </div>
-
-    <div class="tbc-subbox">
-      <span class="tbc-sub">Consulting</span>
-    </div>
-  </div>
-</div>
-
+        <div class="logo-box">
+          ${LOGO_HTML}
+        </div>
 
         <div class="header-title">
           <h1>${title}</h1>
@@ -144,4 +166,3 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
-
