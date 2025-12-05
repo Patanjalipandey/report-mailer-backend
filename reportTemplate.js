@@ -98,34 +98,49 @@ export default function reportTemplate({ title, period, compiled, rows, logo }) 
           <img src="data:image/png;base64,${logo}" alt="True Buddy Logo" />
         </div>
 
-        <div class="header-title">
+       <div class="header-title">
           <h1>${title}</h1>
           <div class="meta">
-            <strong>Period:</strong> ${period}<br/>
+            <strong>Period:</strong> ${period}
+            <br/>
             <strong>Compiled By:</strong> ${compiled}
           </div>
         </div>
       </div>
 
+      <!-- CONTENT -->
       <div class="content">
-        ${Object.keys(grouped).map(section => `
+        ${Object.keys(grouped)
+      .map(
+        (section) => `
           <div class="section-box">
             <div class="section-heading">${section}</div>
 
-            ${grouped[section].map(item => `
+            ${grouped[section]
+            .map(
+              (item) => `
               <div class="item">
-                <div>${item.date}</div>
-                <div><strong>${item.title}</strong></div>
-                <div>${item.meta}</div>
-                <div>${item.summary}</div>
-                ${item.source ? `<a href="${item.source}" target="_blank">Source</a>` : ""}
-              </div>
-            `).join("")}
+                <div class="item-meta">${item.date}</div>
+                <div class="item-title">${item.title}</div>
+                <div class="item-meta">${item.meta}</div>
+                <div class="item-summary">${item.summary}</div>
 
+                ${item.source
+                  ? `<div class="item-source">
+                        <a href="${item.source}" target="_blank">Source</a>
+                      </div>`
+                  : ""
+                }
+              </div>`
+            )
+            .join("")}
           </div>
-        `).join("")}
+        `
+      )
+      .join("")}
       </div>
 
+      <!-- FOOTER -->
       <div class="footer">
         <div>Prepared by <strong>True Buddy Consulting Pvt Ltd</strong></div>
         <div>Period: ${period}</div>
@@ -135,3 +150,4 @@ export default function reportTemplate({ title, period, compiled, rows, logo }) 
   </body>
   </html>`;
 }
+
