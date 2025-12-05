@@ -36,42 +36,40 @@ export default function reportTemplate({ title, period, compiled, rows }) {
          TRUE BUDDY LOGO (PURE CSS)
       ----------------------------*/
 
-/* Email-safe TRUE BUDDY logo */
+/* EMAIL-SAFE + PDF-SAFE LOGO */
 .tb-wrapper {
   display: inline-block;
-  text-align: center;
+  font-family: Arial, sans-serif;
 }
 
 .tb-frame {
-  border: 4px solid #5bb8ff;
+  border: 3px solid #5bb8ff;
   background: #0f6b86;
-  padding: 10px 20px;
+  padding: 6px 16px;
   border-radius: 4px;
 }
 
 .tb-main {
   color: #ffffff;
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 900;
-  letter-spacing: 4px;
-  font-family: Arial, sans-serif;
-  display: block;
+  letter-spacing: 3px;
 }
 
 .tb-subbox {
   background: #5bb8ff;
-  margin-top: 5px;
-  padding: 4px 16px;
-  display: inline-block;
+  padding: 3px 12px;
   border-radius: 4px;
+  margin-top: -6px;   /* THIS WORKS IN GMAIL because inside <td> */
+  display: inline-block;
 }
 
 .tb-sub {
   color: #ffffff;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
-  font-family: Arial, sans-serif;
 }
+
 
       /* -------------------------------- */
 
@@ -113,14 +111,25 @@ export default function reportTemplate({ title, period, compiled, rows }) {
 
       <div class="header">
 <div class="tb-wrapper">
-  <div class="tb-frame">
-    <span class="tb-main">TRUE BUDDY</span>
-  </div>
+  <table cellspacing="0" cellpadding="0" border="0">
+    <tr>
+      <td align="center">
+        <div class="tb-frame">
+          <span class="tb-main">TRUE BUDDY</span>
+        </div>
+      </td>
+    </tr>
 
-  <div class="tb-subbox">
-    <span class="tb-sub">Consulting</span>
-  </div>
+    <tr>
+      <td align="center">
+        <div class="tb-subbox">
+          <span class="tb-sub">Consulting</span>
+        </div>
+      </td>
+    </tr>
+  </table>
 </div>
+
 
 
         <div class="header-title">
@@ -159,5 +168,6 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
