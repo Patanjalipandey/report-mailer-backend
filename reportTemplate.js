@@ -1,4 +1,4 @@
-export default function reportTemplate({ title, period, compiled, rows }) {
+export default function reportTemplate({ title, period, compiled, rows, logo }) {
   // Group rows by section
   const grouped = {};
   rows.forEach(r => {
@@ -200,4 +200,5 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </body>
   </html>`;
 }
+
 
