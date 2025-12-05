@@ -40,6 +40,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
 .tb-wrapper {
   display: inline-block;
   font-family: Arial, sans-serif;
+  margin-top:  20px;
 }
 
 .tb-frame {
@@ -168,6 +169,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
