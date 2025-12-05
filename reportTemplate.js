@@ -47,7 +47,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
 .tb-frame {
   border: 6px solid #5bb8ff;
   background: #0f6b86;
-  padding: 6px 16px;
+  padding: 6px 12px;
   border-radius: 4px;
 }
 
@@ -170,6 +170,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
