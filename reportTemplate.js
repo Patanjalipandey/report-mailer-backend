@@ -1,14 +1,4 @@
-const LOGO_HTML = `
-<div class="tb-logo-wrapper">
-  <div class="tb-frame">
-    <span class="tb-main-text">TRUE BUDDY</span>
-  </div>
 
-  <div class="tb-subbox">
-    <span class="tb-sub-text">Consulting</span>
-  </div>
-</div>
-`;
 
 export default function reportTemplate({ title, period, compiled, rows }) {
   const grouped = {};
@@ -126,9 +116,15 @@ export default function reportTemplate({ title, period, compiled, rows }) {
     <div class="container">
 
       <div class="header">
-        <div class="logo-box">
-          ${LOGO_HTML}
-        </div>
+<div class="tb-logo-wrapper">
+  <div class="tb-frame">
+    <span class="tb-main-text">TRUE BUDDY</span>
+  </div>
+
+  <div class="tb-subbox">
+    <span class="tb-sub-text">Consulting</span>
+  </div>
+</div>
 
         <div class="header-title">
           <h1>${title}</h1>
@@ -166,3 +162,4 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
