@@ -1,5 +1,8 @@
-export default function reportTemplate({ title, period, compiled, rows, logo }) {
-  // Group rows by section
+const LOGO_BASE64 = `
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAANQCAYAAADYLRHeAAAAOXRFWHRTb2Z0d2FyZQBNYWNyb21lZGlhIEZpcmV3b3JrcyAzLjQuMyAoS2VybmVsIDI2LjI5MikgKFAvUE5HKTPoTbogAAAPWUlEQVR4nO3de5BW1b3/8d9zOy99BhYgWNEkSdpC8RAiQ2nYpQ7Tgl9tUyhDj2qV0FtqH1xq0tL0SYhTaoUpTQqQ2kgiYQSSAxGxIUBkWgJhGoYwilcGxiit1z9+zvnnjtebPWbNmXfeeW/mXuecMzPnzM0/zs6cM7Mz55znWcwDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABfB8jZZq2RF1jkqZ7D3RWe4ZrHQDsMFXq5S8fvfrOpz67fSzb5tFHnhOrvYDEAAAAAAAAAAAAAAAAAAAAAAAAAAIBVqT2p8jdJnrmOnYx9lYxnKZ7cfS9rG6/nOjT4NmJf2vpa98jz9Xhz7yNRfXYPgAAAAAAAAAAAAAAAAAAAAAAAAAAAFqQ7qci9sk5o4OSJZ6djC8orgy3lfq7n8brE+dbI+sd0rcx/7mACAAAAAAAAAAAAAAAAAAAAAAAAAAD4B2qN6o8r0rI8cfZLDolnJ1MHyitDLeW+rujxu0b57YjaJfSzxP+5QAgAAAAAAAAAAAAAAAAAAAAAAAAAAAOA1qh+p8o0y08wdjy5Kljp2MLyiuDLcV+rufi6tnnWUPkm9qH7H/sYAI...
+`;
+
+export default function reportTemplate({ title, period, compiled, rows }) {
   const grouped = {};
   rows.forEach(r => {
     if (!grouped[r.section]) grouped[r.section] = [];
@@ -14,125 +17,36 @@ export default function reportTemplate({ title, period, compiled, rows, logo }) 
     <title>${title}</title>
 
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: #f4f7fa;
-        margin: 0;
-        padding: 0;
-      }
+      body { font-family: Arial; background:#f4f7fa; margin:0; padding:0; }
+      .container { max-width:900px; margin:auto; background:#fff; border-radius:10px; }
 
-      .container {
-        max-width: 900px;
-        margin: auto;
-        background: #ffffff;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-        border-radius: 10px;
-        overflow: hidden;
-      }
-
-      /* Header */
       .header {
-        background: linear-gradient(90deg, #0e7490, #2563eb);
-        color: white;
-        padding: 25px 30px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
+        background:linear-gradient(90deg,#0e7490,#2563eb);
+        color:white; padding:25px 30px;
+        display:flex; align-items:center; gap:20px;
       }
 
       .logo-box {
-        background: rgba(255,255,255,0.15);
-        padding: 10px;
-        border-radius: 8px;
-        width: 110px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width:110px; height:70px;
+        display:flex; align-items:center; justify-content:center;
       }
 
-      .logo-box img {
-        max-width: 100%;
-        max-height: 100%;
-      }
+      .header-title h1 { margin:0; font-size:28px; }
+      .meta { font-size:14px; margin-top:5px; }
 
-      .header-title h1 {
-        font-size: 28px;
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
+      .content { padding:30px; }
 
-      .meta {
-        margin-top: 5px;
-        font-size: 14px;
-        opacity: 0.85;
-      }
-
-      /* Sections */
-      .content {
-        padding: 30px;
-      }
-
-      .section-box {
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 25px;
-      }
-
+      .section-box { border:1px solid #e5e7eb; border-radius:8px; margin-bottom:25px; padding:15px; }
       .section-heading {
-        background: linear-gradient(90deg, #0e7490, #2563eb);
-        color: white;
-        padding: 6px 12px;
-        border-radius: 4px;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 15px;
-        text-transform: uppercase;
-        font-size: 13px;
-        letter-spacing: 0.5px;
+        background:linear-gradient(90deg,#0e7490,#2563eb);
+        color:white; padding:6px 12px; border-radius:4px;
+        text-align:center; margin-bottom:15px;
       }
 
-      .item {
-        border-bottom: 1px solid #e5e7eb;
-        padding: 8px 0;
-      }
-
-      .item:last-child {
-        border-bottom: none;
-      }
-
-      .item-title {
-        font-weight: bold;
-        font-size: 15px;
-        margin: 3px 0;
-      }
-
-      .item-meta {
-        font-size: 12px;
-        color: #555;
-      }
-
-      .item-summary {
-        font-size: 14px;
-        margin-top: 3px;
-      }
-
-      .item-source a {
-        font-size: 12px;
-        color: #0e7490;
-      }
-
-      /* Footer */
       .footer {
-        background: linear-gradient(90deg, #0e7490, #2563eb);
-        color: white;
-        padding: 12px 18px;
-        font-size: 12px;
-        display: flex;
-        justify-content: space-between;
+        background:linear-gradient(90deg,#0e7490,#2563eb);
+        padding:12px 18px; color:white; font-size:12px;
+        display:flex; justify-content:space-between;
       }
     </style>
   </head>
@@ -140,66 +54,46 @@ export default function reportTemplate({ title, period, compiled, rows, logo }) 
   <body>
     <div class="container">
 
-      <!-- HEADER -->
       <div class="header">
         <div class="logo-box">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA90AAAFpCAYAAACBCkvMAAEAAElEQVR4nOz9z6+...AhkYiBGBsHl1BfWJIE4uECY4MZxyyLSskhK7O+8e63KoPZz2KJ+kWz5yr54FiAJ" /> 
-     alt="True Buddy Logo" 
-     style="width:100%; height:auto; display:block; margin:0 auto;" />
+          <img src="${LOGO_BASE64}"
+               alt="Logo"
+               style="width:100%; height:auto; display:block;" />
         </div>
 
         <div class="header-title">
           <h1>${title}</h1>
           <div class="meta">
-            <strong>Period:</strong> ${period}
-            <br/>
+            <strong>Period:</strong> ${period}<br/>
             <strong>Compiled By:</strong> ${compiled}
           </div>
         </div>
       </div>
 
-      <!-- CONTENT -->
       <div class="content">
-        ${Object.keys(grouped)
-      .map(
-        (section) => `
+        ${Object.keys(grouped).map(section => `
           <div class="section-box">
             <div class="section-heading">${section}</div>
 
-            ${grouped[section]
-            .map(
-              (item) => `
+            ${grouped[section].map(item => `
               <div class="item">
                 <div class="item-meta">${item.date}</div>
                 <div class="item-title">${item.title}</div>
-                <div class="item-meta">${item.meta}</div>
                 <div class="item-summary">${item.summary}</div>
-
-                ${item.source
-                  ? `<div class="item-source">
-                        <a href="${item.source}" target="_blank">Source</a>
-                      </div>`
-                  : ""
-                }
-              </div>`
-            )
-            .join("")}
+                ${item.source ? `<a href="${item.source}">Source</a>` : ""}
+              </div>
+            `).join("")}
           </div>
-        `
-      )
-      .join("")}
+        `).join("")}
       </div>
 
-      <!-- FOOTER -->
       <div class="footer">
-        <div>Prepared by <strong>True Buddy Consulting Pvt Ltd</strong></div>
+        <div>Prepared by <b>True Buddy Consulting Pvt Ltd</b></div>
         <div>Period: ${period}</div>
       </div>
 
     </div>
   </body>
-  </html>`;
+  </html>
+  `;
 }
-
-
-
