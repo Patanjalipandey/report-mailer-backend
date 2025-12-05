@@ -21,10 +21,8 @@ const reportTemplate =
     ? reportTemplateModule
     : reportTemplateModule.default;
 
-if (!reportTemplate) {
-  console.error("❌ reportTemplate not found!");
-  process.exit(1);
-}
+// Read logo once at startup
+const logoBase64 = fs.readFileSync("./logo.png").toString("base64");
 
 // ===============================
 // RESEND INIT
@@ -39,19 +37,23 @@ app.post("/send-report", async (req, res) => {
     const { title, period, compiled, rows, sendTo } = req.body;
 
     const recipients = sendTo.split(",").map((e) => e.trim());
-    const htmlContent = reportTemplate({ title, period, compiled, rows });
 
-    // ===============================
-    // GENERATE PDF
-    // ===============================
-    console.log("📄 Launching Chromium...");
+    // Pass base64 logo to template
+    const htmlContent = reportTemplate({
+      title,
+      period,
+      compiled,
+      rows,
+      logo: logoBase64,
+    });
+
+    // Generate PDF
     const executablePath = await chromium.executablePath();
-
     const browser = await puppeteer.launch({
       executablePath,
       args: chromium.args,
       headless: chromium.headless,
-      defaultViewport: chromium.defaultViewport
+      defaultViewport: chromium.defaultViewport,
     });
 
     const page = await browser.newPage();
@@ -59,34 +61,24 @@ app.post("/send-report", async (req, res) => {
 
     const pdfBuffer = await page.pdf({
       format: "A4",
-      printBackground: true
+      printBackground: true,
     });
 
     await browser.close();
-    console.log("✅ PDF generated!");
 
-    // ===============================
-    // SEND EMAIL THROUGH RESEND
-    // ===============================
+    // SEND EMAIL THROUGH RESEND API
     const { error, data } = await resend.emails.send({
       from: "TBCPL Reports <reports@tbcpl.co.in>",
       to: recipients,
       subject: "Weekly Watchlist Report",
       html: htmlContent,
-
       attachments: [
         {
           filename: "fraud-report.pdf",
           content: pdfBuffer.toString("base64"),
-          type: "application/pdf"
-        },
-        {
-          filename: "logo.png",
-          content: fs.readFileSync("./logo.png").toString("base64"),
-          type: "image/png",
-          cid: "truebuddylogo" // FIXED!!
+          type: "application/pdf",
         }
-      ]
+      ],
     });
 
     if (error) {
@@ -102,15 +94,11 @@ app.post("/send-report", async (req, res) => {
   }
 });
 
-// ===============================
 // TEST ROUTE
-// ===============================
 app.get("/", (req, res) => {
   res.send("Mailer running with Resend API 🚀");
 });
 
-// ===============================
 // START SERVER
-// ===============================
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Server live on port ${PORT}`));
