@@ -36,46 +36,42 @@ export default function reportTemplate({ title, period, compiled, rows }) {
          TRUE BUDDY LOGO (PURE CSS)
       ----------------------------*/
 
-      .tb-logo-wrapper {
-        position: relative;
-        display: inline-block;
-      }
+/* Email-safe TRUE BUDDY logo */
+.tb-wrapper {
+  display: inline-block;
+  text-align: center;
+}
 
-      .tb-frame {
-        border: 4px solid #5bb8ff;
-        background: #0f6b86;
-        padding: 10px 20px;
-        border-radius: 4px;
-        display: inline-block;
-        text-align: center;
-      }
+.tb-frame {
+  border: 4px solid #5bb8ff;
+  background: #0f6b86;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
 
-      .tb-main-text {
-        color: white;
-        font-weight: 900;
-        font-size: 17px;
-        letter-spacing: 4px;
-        display: block;
-        font-family: Arial, sans-serif;
-      }
+.tb-main {
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  font-family: Arial, sans-serif;
+  display: block;
+}
 
-      .tb-subbox {
-        position: absolute;
-        left: 50%;
-        bottom: -10px;
-        transform: translateX(-50%) translateY(4px);
-        background: #5bb8ff;
-        padding: 4px 16px;
-        border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.25);
-      }
+.tb-subbox {
+  background: #5bb8ff;
+  margin-top: 5px;
+  padding: 4px 16px;
+  display: inline-block;
+  border-radius: 4px;
+}
 
-      .tb-sub-text {
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
-        font-family: Arial, sans-serif;
-      }
+.tb-sub {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+}
 
       /* -------------------------------- */
 
@@ -116,15 +112,16 @@ export default function reportTemplate({ title, period, compiled, rows }) {
     <div class="container">
 
       <div class="header">
-<div class="tb-logo-wrapper">
+<div class="tb-wrapper">
   <div class="tb-frame">
-    <span class="tb-main-text">TRUE BUDDY</span>
+    <span class="tb-main">TRUE BUDDY</span>
   </div>
 
   <div class="tb-subbox">
-    <span class="tb-sub-text">Consulting</span>
+    <span class="tb-sub">Consulting</span>
   </div>
 </div>
+
 
         <div class="header-title">
           <h1>${title}</h1>
@@ -162,4 +159,5 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
