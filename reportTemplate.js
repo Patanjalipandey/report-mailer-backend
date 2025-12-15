@@ -177,29 +177,33 @@ export default function reportTemplate({ title, period, compiled, rows }) {
           <div class="section-box">
             <div class="section-heading">${section}</div>
 
-            ${grouped[section].map(item => `
-              <div class="item">
-                <div class="item-meta">${item.date}</div>
-                <div class="item-title">${item.title}</div>
-                ${item.section === "Analysis" && "Recommendation" ? (
-                                        <ol className="list-decimal ml-5 mt-2 space-y-2 text-sm text-gray-800">
-                                            {item.summary
-                                                .split("\n")
-                                                .filter(Boolean)
-                                                .map((point, idx) => (
-                                                    <li key={idx}>
-                                                        {point.replace(/^\d+\.\s*/, "")}
-                                                    </li>
-                                                ))}
-                                        </ol>
-                                    ) : (
-                                        <p className="text-sm whitespace-pre-line">
-                                            {item.summary}
-                                        </p>
-                                    )}
-                ${item.source ? `<a href="${item.source}">Source</a>` : ""}
-              </div>
-            `).join("")}
+           ${grouped[section].map(item => {
+  let summaryHTML = "";
+
+  if (item.section === "Analysis" || item.section === "Recommendation") {
+    const points = item.summary
+      .split("\n")
+      .filter(Boolean)
+      .map(point =>
+        `<li>${point.replace(/^\d+\.\s*/, "")}</li>`
+      )
+      .join("");
+
+    summaryHTML = `<ol class="analysis-list">${points}</ol>`;
+  } else {
+    summaryHTML = `<p class="item-summary">${item.summary}</p>`;
+  }
+
+  return `
+    <div class="item">
+      <div class="item-meta">${item.date}</div>
+      <div class="item-title">${item.title}</div>
+      ${summaryHTML}
+      ${item.source ? `<a class="source-link" href="${item.source}" target="_blank">Source</a>` : ""}
+    </div>
+  `;
+}).join("")}
+
           </div>
         `).join("")}
       </div>
@@ -230,6 +234,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
