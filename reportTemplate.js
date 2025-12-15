@@ -132,6 +132,43 @@ export default function reportTemplate({ title, period, compiled, rows }) {
 .footer-left strong {
     font-weight: 700;
 }
+.item {
+  margin-bottom: 15px;
+}
+
+.item-meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.item-title {
+  font-weight: 700;
+  margin: 4px 0;
+}
+
+.item-summary {
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.analysis-list {
+  margin: 8px 0 0 18px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.analysis-list li {
+  margin-bottom: 6px;
+}
+
+.source-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #2563eb;
+  text-decoration: none;
+}
 
 
     </style>
@@ -234,6 +271,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
