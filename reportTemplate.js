@@ -181,7 +181,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
               <div class="item">
                 <div class="item-meta">${item.date}</div>
                 <div class="item-title">${item.title}</div>
-                {item.section === "Analysis" && "Recommendation" ? (
+                ${item.section === "Analysis" && "Recommendation" ? (
                                         <ol className="list-decimal ml-5 mt-2 space-y-2 text-sm text-gray-800">
                                             {item.summary
                                                 .split("\n")
@@ -230,6 +230,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
