@@ -96,14 +96,43 @@ export default function reportTemplate({ title, period, compiled, rows }) {
         margin-bottom:15px;
       }
 
-      .footer {
-        background:linear-gradient(90deg,#0e7490,#2563eb);
-        padding:12px 18px;
-        color:white;
-        font-size:12px;
-        display:flex;
-        justify-content:space-between;
-      }
+      .report-footer {
+    background: linear-gradient(to right, #0e7490, #2563eb); /* cyan-700 → blue-500 */
+    color: #ffffff;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Disclaimer */
+.footer-disclaimer {
+    margin-bottom: 8px;
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+/* Footer meta row */
+.footer-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 8px;
+}
+
+/* Left and right sections */
+.footer-left,
+.footer-right {
+    white-space: nowrap;
+}
+
+/* Strong text */
+.footer-left strong {
+    font-weight: 700;
+}
+
 
     </style>
   </head>
@@ -152,7 +181,22 @@ export default function reportTemplate({ title, period, compiled, rows }) {
               <div class="item">
                 <div class="item-meta">${item.date}</div>
                 <div class="item-title">${item.title}</div>
-                <div class="item-summary">${item.summary}</div>
+                {item.section === "Analysis" && "Recommendation" ? (
+                                        <ol className="list-decimal ml-5 mt-2 space-y-2 text-sm text-gray-800">
+                                            {item.summary
+                                                .split("\n")
+                                                .filter(Boolean)
+                                                .map((point, idx) => (
+                                                    <li key={idx}>
+                                                        {point.replace(/^\d+\.\s*/, "")}
+                                                    </li>
+                                                ))}
+                                        </ol>
+                                    ) : (
+                                        <p className="text-sm whitespace-pre-line">
+                                            {item.summary}
+                                        </p>
+                                    )}
                 ${item.source ? `<a href="${item.source}">Source</a>` : ""}
               </div>
             `).join("")}
@@ -160,16 +204,33 @@ export default function reportTemplate({ title, period, compiled, rows }) {
         `).join("")}
       </div>
 
-      <div class="footer">
-        <div>Prepared by <b>True Buddy Consulting Pvt Ltd</b></div>
-        <div>Period: ${period}</div>
-      </div>
+<footer class="report-footer">
+    <!-- Disclaimer -->
+    <div class="footer-disclaimer">
+        Disclaimer – This document is based on publicly available information and field-level inputs compiled for general awareness and risk-intelligence purposes only.
+        It does not constitute legal advice, investigative findings, or a determination of liability.
+        Readers are advised to conduct independent verification and seek appropriate professional counsel
+        before taking any action based on this information.
+    </div>
+
+    <!-- Footer Meta -->
+    <div class="footer-meta">
+        <div class="footer-left">
+            Prepared by <strong>True Buddy Consulting Pvt Ltd</strong> · Period: <span id="report-period">Jan–Dec 2025</span>
+        </div>
+        <div class="footer-right">
+            Contact: contact@tbcpl.co.in
+        </div>
+    </div>
+</footer>
+
 
     </div>
   </body>
   </html>
   `;
 }
+
 
 
 
