@@ -1,5 +1,3 @@
-
-
 export default function reportTemplate({ title, period, compiled, rows }) {
   const grouped = {};
   rows.forEach(r => {
@@ -217,7 +215,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
            ${grouped[section].map(item => {
   let summaryHTML = "";
 
-  if (item.section === "Analysis" || item.section === "Recommendation") {
+  if (item.section === "True Buddy Analysis" || item.section === "Recommendation") {
     const points = item.summary
       .split("\n")
       .filter(Boolean)
@@ -245,25 +243,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
         `).join("")}
       </div>
 
-<footer class="report-footer">
-    <!-- Disclaimer -->
-    <div class="footer-disclaimer">
-        Disclaimer – This document is based on publicly available information and field-level inputs compiled for general awareness and risk-intelligence purposes only.
-        It does not constitute legal advice, investigative findings, or a determination of liability.
-        Readers are advised to conduct independent verification and seek appropriate professional counsel
-        before taking any action based on this information.
-    </div>
 
-    <!-- Footer Meta -->
-    <div class="footer-meta">
-        <div class="footer-left">
-            Prepared by <strong>True Buddy Consulting Pvt Ltd</strong> · Period: <span id="report-period">Jan–Dec 2025</span>
-        </div>
-        <div class="footer-right">
-            Contact: contact@tbcpl.co.in
-        </div>
-    </div>
-</footer>
 
 
     </div>
