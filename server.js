@@ -15,7 +15,27 @@ const app = express();
 // MIDDLEWARE
 // ===============================
 app.use(express.json({ limit: "10mb" }));
-app.use(cors({ origin: "*" }));
+const allowedOrigins = [
+  "https://truebuddytbcpl.github.io",
+  "http://localhost:5173"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Content-Disposition"]
+}));
+
+// VERY IMPORTANT — handle preflight
+app.options("*", cors());
+
 
 // ===============================
 // TEMPLATE
@@ -259,3 +279,4 @@ const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`🚀 Server live on port ${PORT}`);
 });
+
