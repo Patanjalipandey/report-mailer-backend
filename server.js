@@ -33,8 +33,6 @@ app.use(cors({
   exposedHeaders: ["Content-Disposition"]
 }));
 
-// VERY IMPORTANT — handle preflight
-app.options("*", cors());
 
 
 // ===============================
@@ -279,4 +277,5 @@ const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`🚀 Server live on port ${PORT}`);
 });
+
 
