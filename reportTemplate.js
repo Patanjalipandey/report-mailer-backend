@@ -215,7 +215,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
            ${grouped[section].map(item => {
   let summaryHTML = "";
 
-  if (item.section === "True Buddy Analysis" || item.section === "Recommendation") {
+  if (item.section === "Analysis" || item.section === "Recommendation") {
     const points = item.summary
       .split("\n")
       .filter(Boolean)
@@ -251,6 +251,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
