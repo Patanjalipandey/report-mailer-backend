@@ -231,7 +231,6 @@ export default function reportTemplate({ title, period, compiled, rows }) {
 
   return `
     <div class="item">
-      <div class="item-meta">${item.date}</div>
       <div class="item-title">${item.title}</div>
       ${summaryHTML}
       ${item.source ? `<a class="source-link" href="${item.source}" target="_blank">Source</a>` : ""}
@@ -251,6 +250,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
