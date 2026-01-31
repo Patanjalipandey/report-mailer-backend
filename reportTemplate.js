@@ -228,7 +228,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
 
     summaryHTML = `<ol class="analysis-list">${points}</ol>`;
   } else {
-    summaryHTML = `<p class="item-summary">${item.summary}</p>`;
+    summaryHTML = `<p class="item-summary" style="font-size:20px;">${item.summary}</p>`;
   }
 
   return `
@@ -252,6 +252,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
