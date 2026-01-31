@@ -92,6 +92,8 @@ export default function reportTemplate({ title, period, compiled, rows }) {
         border-radius:4px;
         text-align:center;
         margin-bottom:15px;
+        font-size: 18px;  /* Add this line */
+        font-weight: 600;
       }
 
       .report-footer {
@@ -250,6 +252,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
