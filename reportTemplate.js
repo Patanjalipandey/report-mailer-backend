@@ -212,7 +212,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
       <div class="content">
         ${Object.keys(grouped).map(section => `
           <div class="section-box">
-            <div style="font-size:24px;font-weight:700;text-transform:uppercase;" class="section-heading">${section}</div>
+            <div style="font-size:20px;font-weight:700;text-transform:uppercase;" class="section-heading">${section}</div>
 
            ${grouped[section].map(item => {
   let summaryHTML = "";
@@ -228,14 +228,14 @@ export default function reportTemplate({ title, period, compiled, rows }) {
 
     summaryHTML = `<ol class="analysis-list">${points}</ol>`;
   } else {
-    summaryHTML = `<p class="item-summary" style="font-size:16px;">${item.summary}</p>`;
+    summaryHTML = `<p class="item-summary" style="font-size:14px;">${item.summary}</p>`;
   }
 
   return `
     <div class="item">
       <div class="item-title">${item.title}</div>
       ${summaryHTML}
-      ${item.source ? `<a class="source-link" href="${item.source}" target="_blank" style="margin-top:-10px;">Read more...</a>` : ""}
+      ${item.source ? `<a class="source-link" href="${item.source}" target="_blank" style="margin-top:-10px; margin-bottom:10px;">Read more...</a>` : ""}
     </div>
   `;
 }).join("")}
@@ -252,6 +252,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
