@@ -212,7 +212,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
       <div class="content">
         ${Object.keys(grouped).map(section => `
           <div class="section-box">
-            <div style="font-size:20px;font-weight:700;" class="section-heading">${section}</div>
+            <div style="font-size:24px;font-weight:700;text-transform:uppercase;" class="section-heading">${section}</div>
 
            ${grouped[section].map(item => {
   let summaryHTML = "";
@@ -252,6 +252,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
