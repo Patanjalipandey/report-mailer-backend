@@ -228,14 +228,14 @@ export default function reportTemplate({ title, period, compiled, rows }) {
 
     summaryHTML = `<ol class="analysis-list">${points}</ol>`;
   } else {
-    summaryHTML = `<p class="item-summary" style="font-size:20px;">${item.summary}</p>`;
+    summaryHTML = `<p class="item-summary" style="font-size:16px;">${item.summary}</p>`;
   }
 
   return `
     <div class="item">
       <div class="item-title">${item.title}</div>
       ${summaryHTML}
-      ${item.source ? `<a class="source-link" href="${item.source}" target="_blank">Source</a>` : ""}
+      ${item.source ? `<a class="source-link" href="${item.source}" target="_blank" style="margin-top:-10px;">Read more...</a>` : ""}
     </div>
   `;
 }).join("")}
@@ -252,6 +252,7 @@ export default function reportTemplate({ title, period, compiled, rows }) {
   </html>
   `;
 }
+
 
 
 
